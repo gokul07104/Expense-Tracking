@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="bg-gradient"></div>
+
+  <div class="auth-shell" id="auth-shell">
+    <div class="auth-card">
+      <div class="auth-illustration">
+        <img src="https://cdn.jsdelivr.net/gh/alohe/3d-icons/finance/wallet.png" alt="Authentication illustration">
+      </div>
+      <div class="auth-forms">
+        <div class="auth-tabs">
+          <button class="tab-btn active" data-tab="login">Login</button>
+          <button class="tab-btn" data-tab="register">Register</button>
+        </div>
+
+        <form id="login-form" class="auth-form" data-form="login">
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="you@example.com" required />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" required />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="primary-btn">Login</button>
+          </div>
+          <p class="microcopy">Login with your registered email and password.</p>
+        </form>
+
+        <form id="register-form" class="auth-form hidden" data-form="register">
+          <div class="field">
+            <label>Full name</label>
+            <input type="text" id="register-name" placeholder="Amelia Anderson" required />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="register-email" placeholder="you@example.com" required />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" id="register-password" placeholder="Create a password" required />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="primary-btn">Create account</button>
+          </div>
+          <p class="microcopy">We keep things local-only. Your data stays on this device.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-shell hidden" id="app-shell">
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Welcome back</p>
+          <h1 id="welcome-name">Hello!</h1>
+        </div>
+        <div class="top-actions">
+          <button id="layout-toggle" class="icon-btn" aria-label="Toggle layout mode">⇔</button>
+          <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">🌙</button>
+          <button id="logout-btn" class="ghost-btn">Log out</button>
+          <div class="user-chip" id="user-chip">
+            <div class="avatar">👤</div>
+            <div>
+              <div id="chip-name" class="chip-name">User</div>
+              <div id="chip-email" class="chip-email">you@example.com</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h2>Track daily spend with clarity</h2>
+          <p class="muted">Add expenses, see trends, and stay on top of your budget.</p>
+          <div class="cta-row">
+            <button class="primary-btn" id="quick-add-btn">Quick add expense</button>
+            <button class="ghost-btn" id="upload-btn">Upload receipt</button>
+            <button class="ghost-btn" id="view-insights-btn">View insights</button>
+          </div>
+        </div>
+        <div class="hero-illustration" aria-hidden="true">
+          <svg viewBox="0 0 240 200" role="presentation">
+            <defs>
+              <linearGradient id="coin" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop stop-color="#ffd66b" offset="0%"/>
+                <stop stop-color="#f7b733" offset="100%"/>
+              </linearGradient>
+              <linearGradient id="bag" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop stop-color="#7b61ff" offset="0%"/>
+                <stop stop-color="#5a46d6" offset="100%"/>
+              </linearGradient>
+              <linearGradient id="bagShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop stop-color="#1e1b4b" stop-opacity="0.45" offset="0%"/>
+                <stop stop-color="#0b0a1f" stop-opacity="0.75" offset="100%"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="120" cy="170" rx="90" ry="18" fill="rgba(15,23,42,0.12)"/>
+            <path d="M90 45 L150 45 L140 70 L100 70 Z" fill="url(#bag)" />
+            <path d="M70 70 C70 50 170 50 170 70 L170 145 C170 165 70 165 70 145 Z" fill="url(#bag)"/>
+            <path d="M70 70 C70 50 170 50 170 70 L170 145 C170 165 70 165 70 145 Z" fill="url(#bagShadow)" opacity="0.25"/>
+            <rect x="90" y="35" width="60" height="10" rx="5" fill="#f7b733"/>
+            <circle cx="105" cy="100" r="18" fill="url(#coin)"/>
+            <circle cx="135" cy="115" r="18" fill="url(#coin)"/>
+            <circle cx="120" cy="130" r="18" fill="url(#coin)"/>
+            <path d="M118 94 L124 94 L121 110 L115 110 Z" fill="#0f172a"/>
+            <path d="M120 114 A8 8 0 0 0 130 114" stroke="#0f172a" stroke-width="4" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </section>
+
+      <section class="grid stats-grid" aria-label="Summary">
+        <div class="card stat">
+          <p class="muted">This month</p>
+          <h3 id="stat-month-total">$0</h3>
+          <p class="trend positive" id="stat-month-change">+0% vs last month</p>
+        </div>
+        <div class="card stat">
+          <p class="muted">Avg / day</p>
+          <h3 id="stat-daily-avg">$0</h3>
+          <p class="muted">Across the last 7 days</p>
+        </div>
+        <div class="card stat">
+          <p class="muted">Top category</p>
+          <h3 id="stat-top-category">—</h3>
+          <p class="muted" id="stat-top-amount">$0 total</p>
+        </div>
+        <div class="card stat">
+          <p class="muted">Entries</p>
+          <h3 id="stat-count">0</h3>
+          <p class="muted">All-time</p>
+        </div>
+      </section>
+
+      <section class="grid charts-grid" aria-label="Charts">
+        <div class="card">
+          <div class="card-header">
+            <h4>Spending by day</h4>
+            <span class="pill">Bar</span>
+          </div>
+          <canvas id="bar-chart" height="200"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h4>By category</h4>
+            <span class="pill">Pie</span>
+          </div>
+          <canvas id="pie-chart" height="200"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h4>Monthly trend</h4>
+            <span class="pill">Line</span>
+          </div>
+          <canvas id="line-chart" height="200"></canvas>
+        </div>
+      </section>
+
+      <section class="grid main-grid" aria-label="Expenses">
+        <div class="card">
+          <div class="card-header">
+            <h4>Add expense</h4>
+          </div>
+          <form id="expense-form" class="expense-form">
+            <div class="field">
+              <label>Date</label>
+              <input type="date" id="expense-date" required />
+            </div>
+            <div class="field">
+              <label>Category</label>
+              <select id="expense-category" required>
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Bills">Bills</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Health">Health</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field hidden" id="other-category-field">
+              <label>Other category name</label>
+              <input type="text" id="other-category-input" placeholder="e.g., Gifts" />
+            </div>
+            <div class="field">
+              <label>Amount</label>
+              <input type="number" step="0.01" min="0" id="expense-amount" placeholder="25.00" required />
+            </div>
+            <div class="field">
+              <label>Note</label>
+              <input type="text" id="expense-note" placeholder="Coffee with friends" />
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="primary-btn">Add expense</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h4>Recent expenses</h4>
+            <button class="ghost-btn small" id="clear-expenses-btn">Clear all</button>
+          </div>
+          <div id="expense-list" class="expense-list"></div>
+          <div id="expense-empty" class="empty-state">
+            <p>No expenses yet. Add your first one!</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Quick Add Modal -->
+  <div class="modal hidden" id="quick-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Quick add expense</h3>
+        <button class="icon-btn" data-close-modal="quick-modal">×</button>
+      </div>
+      <form id="quick-form" class="modal-form">
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="quick-date" required />
+        </div>
+        <div class="field">
+          <label>Category</label>
+          <select id="quick-category" required>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Bills">Bills</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Health">Health</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="field hidden" id="quick-other-field">
+          <label>Other category name</label>
+          <input type="text" id="quick-other-input" placeholder="e.g., Gifts" />
+        </div>
+        <div class="field">
+          <label>Amount</label>
+          <input type="number" step="0.01" min="0" id="quick-amount" placeholder="25.00" required />
+        </div>
+        <div class="field">
+          <label>Note</label>
+          <input type="text" id="quick-note" placeholder="Coffee with friends" />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn">Add expense</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Upload Modal -->
+  <div class="modal hidden" id="upload-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Upload expense document</h3>
+        <button class="icon-btn" data-close-modal="upload-modal">×</button>
+      </div>
+      <div class="upload-zone" id="upload-zone">
+        <p>Drop a receipt or click to upload</p>
+        <input type="file" id="upload-input" accept=".pdf,.png,.jpg,.jpeg" />
+      </div>
+      <p class="microcopy">This is a mock upload; files are not sent anywhere.</p>
+    </div>
+  </div>
+
+  <!-- User Drawer -->
+  <div class="drawer hidden" id="user-drawer">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h3>Profile</h3>
+        <button class="icon-btn" data-close-drawer="user-drawer">×</button>
+      </div>
+      <div class="drawer-body">
+        <div class="drawer-summary">
+          <div class="avatar large">👤</div>
+          <div>
+            <div id="drawer-name">User</div>
+            <div id="drawer-email" class="muted small">you@example.com</div>
+          </div>
+        </div>
+
+        <div class="drawer-actions" id="drawer-actions">
+          <button class="ghost-btn" id="edit-details-btn">Edit details</button>
+          <button class="ghost-btn" id="change-password-btn">Change password</button>
+          <button class="ghost-btn" id="drawer-dark-toggle">Toggle dark theme</button>
+          <button class="ghost-btn" id="drawer-layout-toggle">Toggle layout mode</button>
+          <button class="ghost-btn danger" id="drawer-logout-btn">Logout</button>
+        </div>
+
+        <form id="user-form" class="modal-form hidden">
+          <h4>Edit details</h4>
+          <div class="field">
+            <label>Full name</label>
+            <input type="text" id="user-name" required />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="user-email" required />
+          </div>
+          <div class="form-actions">
+            <button type="button" class="ghost-btn" id="back-to-actions-1">Back</button>
+            <button type="submit" class="primary-btn">Save profile</button>
+          </div>
+        </form>
+
+        <form id="password-form" class="modal-form hidden">
+          <h4>Change password</h4>
+          <div class="field">
+            <label>Old password</label>
+            <input type="password" id="old-password" required />
+          </div>
+          <div class="field">
+            <label>New password</label>
+            <input type="password" id="new-password" required />
+          </div>
+          <div class="field">
+            <label>Confirm password</label>
+            <input type="password" id="confirm-password" required />
+          </div>
+          <div class="form-actions">
+            <button type="button" class="ghost-btn" id="back-to-actions-2">Back</button>
+            <button type="submit" class="primary-btn">Update password</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
